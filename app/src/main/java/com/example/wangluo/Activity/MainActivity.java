@@ -1,0 +1,167 @@
+package com.example.wangluo.Activity;
+
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+import android.support.v7.widget.Toolbar;
+
+import com.example.wangluo.Adapter.ViewPagerAdapter;
+import com.example.wangluo.R;
+import com.example.wangluo.Fragment.RankFragment;
+import com.example.wangluo.Fragment.ReferFragment;
+import com.example.wangluo.Fragment.TrackFragment;
+import com.example.wangluo.Utils.BottomNavigationViewHelper;
+
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+
+   private RankFragment rankFragment;
+   private TrackFragment trackFragment;
+   private ReferFragment referFragment;
+   private Fragment[] fragments;
+   private int lastShowFragment=0;
+   private ViewPager viewPager;
+   private BottomNavigationView navigation;
+   private MenuItem menuItem;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        NavigationView navigationView=(NavigationView)findViewById(R.id.nav_view) ;
+        navigationView.setCheckedItem(R.id.nav_us);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                return true;
+            }
+        });
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        navigation= (BottomNavigationView) findViewById(R.id.navigation);
+        viewPager=(ViewPager)findViewById(R.id.viewpager);
+        initView();
+    }
+
+    private void initView() {
+        //默认 >3 的选中效果会影响ViewPager的滑动切换时的效果，故利用反射去掉
+        viewPager=(ViewPager)findViewById(R.id.viewpager);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            BottomNavigationViewHelper.disableShiftMode(navigation);
+        }
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new RankFragment());
+        adapter.addFragment(new TrackFragment());
+        adapter.addFragment(new ReferFragment());
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(0);
+
+        //缓存3个页面，来解决点击“我的”回来，首页空白的问题，
+        // 存在的问题，如果有的页面不需要缓存该如何自动刷新，可以利用eventbus传参来进行该页面的操作
+        //viewpager.setOffscreenPageLimit(3);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+            @Override
+
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
+
+                switch (item.getItemId()) {
+
+                    case R.id.navigation_rank:
+
+                        viewPager.setCurrentItem(0);
+
+                        return true;
+
+                    case R.id.navigation_track:
+
+                        viewPager.setCurrentItem(1);
+
+                        return true;
+
+                    case R.id.navigation_reference:
+
+                        viewPager.setCurrentItem(2);
+                        return true;
+                }
+
+                return false;
+
+            }
+
+        });
+
+
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+            @Override
+            public void onPageSelected(int position) {
+
+                if (menuItem != null) {
+
+                    menuItem.setChecked(false);
+
+                } else {
+
+                    navigation.getMenu().getItem(0).setChecked(false);
+
+                }
+
+                menuItem = navigation.getMenu().getItem(position);
+
+                menuItem.setChecked(true);
+
+            }
+
+
+
+            @Override
+
+            public void onPageScrollStateChanged(int state) {
+
+            }
+
+        });
+
+
+
+     /*   //禁止ViewPager滑动
+
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+
+            public boolean onTouch(View v, MotionEvent event) {
+
+                return true;
+
+            }
+
+        });*/
+
+
+
+    }
+
+
+}
