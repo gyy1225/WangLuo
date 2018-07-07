@@ -10,9 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.wangluo.Adapter.MyReferRecyclerViewAdapter;
 import com.example.wangluo.Adapter.MyTrackRecyclerViewAdapter;
+import com.example.wangluo.Class.Content;
 import com.example.wangluo.R;
 import com.example.wangluo.dummy.DummyContent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -21,53 +26,30 @@ import com.example.wangluo.dummy.DummyContent;
  */
 public class TrackFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public TrackFragment() {
-    }
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static TrackFragment newInstance(int columnCount) {
-        TrackFragment fragment = new TrackFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+   private List<Content> mTrackList=new ArrayList<>();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_track_list, container, false);
-
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.track_list);
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new MyTrackRecyclerViewAdapter());
-        }
+        LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        mTrackList=initRecyclerView();
+        recyclerView.setAdapter(new MyTrackRecyclerViewAdapter(mTrackList));
         return view;
     }
+private List<Content> initRecyclerView(){
+        Content content1=new Content();
+        content1.setId("微博博主");
+        content1.setContent("最近更新内容");
+        mTrackList.add(content1);
+        return mTrackList;
+}
 
 }

@@ -19,6 +19,9 @@ import java.util.List;
 
 public class MyReferRecyclerViewAdapter extends RecyclerView.Adapter<MyReferRecyclerViewAdapter.ViewHolder> {
     private List<Content> mReferList;
+    public MyReferRecyclerViewAdapter(List<Content>mReferList){
+        this.mReferList=mReferList;
+    }
     class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView referImage;
@@ -37,8 +40,8 @@ public class MyReferRecyclerViewAdapter extends RecyclerView.Adapter<MyReferRecy
     }
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_track_item,parent,false);
-        final MyReferRecyclerViewAdapter.ViewHolder holder=new MyReferRecyclerViewAdapter.ViewHolder(view);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_refer_item,parent,false);
+        final ViewHolder holder=new ViewHolder(view);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,7 +52,7 @@ public class MyReferRecyclerViewAdapter extends RecyclerView.Adapter<MyReferRecy
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder( ViewHolder holder, int position) {
         Content content=mReferList.get(position);
         holder.referImage.setImageResource(content.getImageID());
         holder.referTitle.setText(content.getTitle());

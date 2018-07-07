@@ -6,13 +6,17 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.example.wangluo.Adapter.ViewPagerAdapter;
 import com.example.wangluo.R;
@@ -30,24 +34,18 @@ public class MainActivity extends AppCompatActivity {
    private ReferFragment referFragment;
    private Fragment[] fragments;
    private int lastShowFragment=0;
+   private FragmentManager fragmentManager;
+   private FragmentTransaction transaction;
    private ViewPager viewPager;
    private BottomNavigationView navigation;
    private MenuItem menuItem;
+   private MenuItem prevMenuItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        NavigationView navigationView=(NavigationView)findViewById(R.id.nav_view) ;
-        navigationView.setCheckedItem(R.id.nav_us);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                return true;
-            }
-        });
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         navigation= (BottomNavigationView) findViewById(R.id.navigation);
@@ -84,18 +82,23 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navigation_rank:
 
                         viewPager.setCurrentItem(0);
-
+                       /* transaction = fragmentManager.beginTransaction();
+                        transaction.replace(R.id.viewpager, rankFragment);
+                        transaction.commit();*/
                         return true;
 
                     case R.id.navigation_track:
 
                         viewPager.setCurrentItem(1);
-
+                        /*transaction.replace(R.id.viewpager, trackFragment);
+                        transaction.commit();*/
                         return true;
 
                     case R.id.navigation_reference:
 
                         viewPager.setCurrentItem(2);
+                        /*transaction.replace(R.id.viewpager, referFragment);
+                        transaction.commit();*/
                         return true;
                 }
 
@@ -145,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-     /*   //禁止ViewPager滑动
+       //禁止ViewPager滑动
 
         viewPager.setOnTouchListener(new View.OnTouchListener() {
 
@@ -157,8 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-        });*/
-
+        });
 
 
     }

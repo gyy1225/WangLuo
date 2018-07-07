@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.wangluo.Activity.MainActivity;
 import com.example.wangluo.Adapter.MyRankRecyclerViewAdapter;
 import com.example.wangluo.Adapter.TabFragmentAdapter;
 import com.example.wangluo.Class.Content;
@@ -28,14 +29,14 @@ import java.util.List;
  */
 public class RankFragment extends Fragment {
 
-    private List<Content> rankList=new ArrayList<>();
+    private List<Content> rankList = new ArrayList<>();
     private View view;
     private TabLayout tab_rank;
     private ViewPager vp_rank;
     private RecyclerView recyclerView;
-    private List<Content> rankContentList=new ArrayList<>();
+    private List<Content> rankContentList = new ArrayList<>();
 
-    private List<RankListFragment> fragmentsList=new ArrayList<>();
+    private List<RankListFragment> fragmentsList = new ArrayList<>();
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
@@ -67,8 +68,9 @@ public class RankFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_rank_list, container, false);
+        ViewGroup parent = (ViewGroup) view.getParent();
         tab_rank = (TabLayout) view.findViewById(R.id.tab_rank);
-        vp_rank = (ViewPager)view .findViewById(R.id.vp_rank);
+        vp_rank = (ViewPager) view.findViewById(R.id.vp_rank);
         initViewPager(view);
         return view;
     }
@@ -76,7 +78,7 @@ public class RankFragment extends Fragment {
 
     private void initViewPager(View parentView) {
 
-      //设置它的名字
+        //设置它的名字
         List<String> titles = new ArrayList<>();
         titles.add("互联网");
         titles.add("体育");
@@ -88,21 +90,69 @@ public class RankFragment extends Fragment {
         //初始化ViewPager的数据集
         List<RankListFragment> fragments = new ArrayList<>();
         //初始化它
-        for (int i=0;i<7;i++) {
+        for (int i = 0; i < 7; i++) {
             tab_rank.addTab(tab_rank.newTab().setText(titles.get(i)));
             fragments.add(new RankListFragment());
         }
-        vp_rank.setAdapter(new TabFragmentAdapter(getFragmentManager(), fragments,titles));
+        vp_rank.setAdapter(new TabFragmentAdapter(getChildFragmentManager(), fragments, titles));
         tab_rank.setupWithViewPager(vp_rank);
 
-}
-   private void initRecyclerView(View viewContent){
+    }
+
+    private void initRecyclerView(View viewContent) {
         RecyclerView recyclerView = (RecyclerView) viewContent.findViewById(R.id.rv_rank_list);
-        LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        MyRankRecyclerViewAdapter myRankRecyclerViewAdapter=new MyRankRecyclerViewAdapter(rankContentList);
-        recyclerView.setAdapter(myRankRecyclerViewAdapter);
 
     }
-}
 
+    private TabLayout.OnTabSelectedListener tabSelectedListener = new TabLayout.OnTabSelectedListener() {
+
+        @Override
+
+        public void onTabSelected(TabLayout.Tab tab) {
+
+            int mTag = (int) tab.getTag();
+            switch (mTag) {
+                case 3:
+                    Content content1 = new Content();
+                    content1.setId("1");
+                    content1.setTitle("往后余生");
+                    content1.setAuthor("马良");
+                    rankContentList.add(content1);
+                    break;
+                default:
+            }
+            MyRankRecyclerViewAdapter myRankRecyclerViewAdapter=new MyRankRecyclerViewAdapter(mTag, rankContentList);
+            recyclerView.setAdapter(myRankRecyclerViewAdapter);
+            recyclerView.getAdapter().notifyDataSetChanged();
+
+        }
+
+
+        @Override
+
+        public void onTabUnselected(TabLayout.Tab tab) {
+
+
+        }
+
+
+        @Override
+
+        public void onTabReselected(TabLayout.Tab tab) {
+
+
+        }
+
+        public List<Content> initList() {
+            Content content1 = new Content();
+            content1.setId("1");
+            content1.setTitle("往后余生");
+            content1.setAuthor("马良");
+            rankContentList.add(content1);
+            return rankContentList;
+        }
+
+    };
+}

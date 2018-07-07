@@ -25,7 +25,9 @@ public class RankListFragment extends Fragment {
         private View viewContent;
         private int mType = 0;
         private String mTitle;
+        private  int mTag;
 
+        private int mPosition;
         private List<Content> rankContentList=new ArrayList<>();
 
         public void setType(int mType) {
@@ -43,13 +45,28 @@ public class RankListFragment extends Fragment {
             viewContent = inflater.inflate(R.layout.rank_list_content,container,false);
             RecyclerView recyclerView = (RecyclerView) viewContent.findViewById(R.id.rv_rank_list);
             LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
-
             recyclerView.setLayoutManager(layoutManager);
-            MyRankRecyclerViewAdapter myRankRecyclerViewAdapter=new MyRankRecyclerViewAdapter(rankContentList);
+            MyRankRecyclerViewAdapter myRankRecyclerViewAdapter=new MyRankRecyclerViewAdapter(mType,rankContentList);
             recyclerView.setAdapter(myRankRecyclerViewAdapter);
 
+            mPosition=3;
+            initList(mPosition);
             return viewContent;
+        }
+        public List<Content> initList(int mPosition){
+            switch (mPosition) {
+                case 3:
+                    Content content1 = new Content();
+                    content1.setId("1");
+                    content1.setTitle("往后余生");
+                    content1.setAuthor("马良");
+                    rankContentList.add(content1);
+                    break;
+                default:
+            }
+            return  rankContentList;
         }
 
     }
+
 

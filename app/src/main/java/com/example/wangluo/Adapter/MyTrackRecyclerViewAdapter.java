@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.wangluo.Class.Content;
 import com.example.wangluo.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,10 @@ import java.util.List;
 
 public class MyTrackRecyclerViewAdapter extends RecyclerView.Adapter<MyTrackRecyclerViewAdapter.ViewHolder> {
 
-    private List<Content>mTrackList;
+    private List<Content>mTrackList=new ArrayList<>();
+    public MyTrackRecyclerViewAdapter (List<Content>mTrackList){
+        this.mTrackList=mTrackList;
+    }
     class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView trackImage;

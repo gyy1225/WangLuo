@@ -18,11 +18,12 @@ import java.util.List;
 
 public class MyRankRecyclerViewAdapter extends RecyclerView.Adapter<MyRankRecyclerViewAdapter.ViewHolder> {
     private List<Content> mContentList;
-
+    private int mTag;
 
 class ViewHolder extends RecyclerView.ViewHolder{
     TextView tv_grade;
     TextView tv_title;
+
     public ViewHolder(View itemView) {
         super(itemView);
 
@@ -30,7 +31,8 @@ class ViewHolder extends RecyclerView.ViewHolder{
         tv_title=(TextView)itemView.findViewById(R.id.rank_title);
     }
 }
-public MyRankRecyclerViewAdapter(List<Content> contentList){
+public MyRankRecyclerViewAdapter(int tag,List<Content> contentList){
+    mTag=tag;
     mContentList=contentList;
 
 }
